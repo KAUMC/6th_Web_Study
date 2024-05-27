@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-function UserGreeting(props) {
+function UserGreeting() {
   return <h1>환영합니다!</h1>;
 }
 
-function GuestGreeting(props) {
+function GuestGreeting() {
   return <h1>로그인 해주세요!</h1>;
 }
 
@@ -32,40 +32,30 @@ function LogoutButton(props) {
   );
 }
 
-class LoginControl extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isLoggedIn: false };
+function LoginControl() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+  const handleLoginClick = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogoutClick = () => {
+    setIsLoggedIn(false);
+  };
+
+  let button;
+  if (isLoggedIn) {
+    button = <LogoutButton onClick={handleLogoutClick} />;
+  } else {
+    button = <LoginButton onClick={handleLoginClick} />;
   }
 
-  handleLoginClick() {
-    this.setState({ isLoggedIn: true });
-  }
-
-  handleLogoutClick() {
-    this.setState({ isLoggedIn: false });
-  }
-
-  render() {
-    const isLoggedIn = this.state.isLoggedIn;
-
-    let button;
-    if (isLoggedIn) {
-      button = <LogoutButton onClick={this.handleLogoutClick} />;
-    } else {
-      button = <LoginButton onClick={this.handleLoginClick} />;
-    }
-
-    return (
-      <div className='login-control'>
-        {button}
-        <Greeting isLoggedIn={isLoggedIn} />
-      </div>
-    );
-  }
+  return (
+    <div className='login-control'>
+      {button}
+      <Greeting isLoggedIn={isLoggedIn} />
+    </div>
+  );
 }
 
 export default LoginControl;
